@@ -1,0 +1,29 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	background-color: #222;
+	color: #111111;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+
+button {
+	border: 0;
+	border-radius: 5px;
+	padding: 1.2rem 3rem;
+	color: #fff;
+	font-size: 1.4rem;
+	letter-spacing: 1.5px;
+	background-color: crimson;
+	cursor: pointer;
+}

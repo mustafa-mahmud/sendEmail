@@ -1,0 +1,62 @@
+<?php
+//LINK:: https: //github.com/PHPMailer/PHPMailer
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+$json = file_get_contents("php://input");
+//$data = json_decode($json, true);
+
+//Get Values from JS file
+//$body = $data[0][4] . $data[0][0][1];
+
+$x = "Hello World";
+
+$body = $json;
+
+$to = "forallweb000@gmail.com";
+$to2 = "mithuweb000@gmail.com";
+$subject = "Check Email Template";
+
+//Get require file
+require_once "PHPMailer/PHPMailer.php";
+require_once "PHPMailer/SMTP.php";
+require_once "PHPMailer/Exception.php";
+
+//Initiate PHPMailer Class
+$mail = new PHPMailer();
+
+//Smtp Settings
+$mail->isSMTP();
+$mail->Host = "smtp.gmail.com";
+$mail->SMTPAuth = true;
+$mail->Username = $to;
+$mail->Password = "forall000BD00@#$%Mt";
+$mail->Port = 465; //587
+$mail->SMTPSecure = "ssl";
+
+//Recipients
+$mail->setFrom($to, "Mithu Khan");
+$mail->addAddress($to);
+$mail->addAddress($to2);
+//$mail->addCC('cc@example.com'); //CC
+//$mail->addBCC('bcc@example.com'); //BCC
+
+//Contents
+$mail->isHTML(true);
+$mail->Subject = $subject;
+$mail->Body = $body;
+$mail->AltBody = $body;
+
+//Proccess Error
+if ($mail->send()) {
+  $status = "Success";
+  $response = "Email is sent";
+} else {
+  $status = "Failed";
+  $response = "Something went wrong. " . $mail->ErrorInfo;
+}
+
+exit(json_encode(
+  ["status" => $status, "response" => $response]
+));
+?>
