@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	const btn = document.querySelector("button");
 	const courseName = "PHP OPERATOR";
+	let correctAns = 0;
 
 	btn.addEventListener("click", sendData);
 
@@ -43,37 +44,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		const jsonData = [
 			[qBodyDataProcess, qDataProcess, ansDataProcess, parseUserAns, courseName]
-		]
+		];
 
-		//console.log(jsonData);
-
-		//see question body
-		for (let i = 0; i < jsonData.length; i++) {
-			for (let j = 0; j < jsonData[0][0].length; j++) {
-				//console.log(jsonData[0][0][j]);
+		for (let i = 0; i < jsonData[0][0].length; i++) {
+			let okAns = jsonData[0][2][i];
+			let userAns = jsonData[0][3][i];
+			if (okAns == userAns) {
+				correctAns++;
 			}
 		}
 
-		//see question
-		for (let i = 0; i < jsonData.length; i++) {
-			for (let j = 0; j < jsonData[0][1].length; j++) {
-				//console.log(jsonData[0][1][j]);
-			}
-		}
-
-		//see correct answer
-		for (let i = 0; i < jsonData.length; i++) {
-			for (let j = 0; j < jsonData[0][2].length; j++) {
-				//console.log(jsonData[0][2][j]);
-			}
-		}
-
-		//see user given anser
-		for (let i = 0; i < jsonData.length; i++) {
-			for (let j = 0; j < jsonData[0][3].length; j++) {
-				//console.log(jsonData[0][3][j]);
-			}
-		}
+		//average/percentage of correct numbers
+		let average = Math.round((correctAns / jsonData[0][0].length) * 100) + "%";
 
 		let qBodyHtml = jsonData[0][0].map((item, index) => {
 			return `
@@ -129,14 +111,13 @@ window.addEventListener("DOMContentLoaded", () => {
 								</table>
 
 								<table table border = '0'	cellpadding = '0'	cellspacing = '0'	width = '100%'
-								style = '${(jsonData[0][2][index] != jsonData[0][3][index]) ? 'display:block' : 'display:none'}'
-								>
+								style = '${(jsonData[0][2][index] != jsonData[0][3][index]) ? 'display:table' : 'display:none'}'>
 									<tr>
 										<td align='left'>
 											<span style='font-weight: bold;font-size: 20px;'>Correct Answer Was:</span>
 											<span style='font-size: 18px; color:#32CD32;font-weight:bold'>${(jsonData[0][2][index]!=jsonData[0][3][index])?jsonData[0][2][index]:""}</span>
 										</td>
-									</tr>
+									</tr> 
 								</table>
 
 								<table border='0' cellpadding='0' cellspacing='0' width='100%'>
@@ -144,11 +125,40 @@ window.addEventListener("DOMContentLoaded", () => {
 										<td width='600' align='center' height='10' style='border-bottom: 1px dotted #666;'></td>
 									</tr>
 								</table>
-							</div>
+					</div>
 			`;
 		});
 
-		console.log(qBodyHtml);
+		let result = `
+								<div class='result'>
+								<table border='0' cellpadding='0' cellspacing='0' width='100%'>
+									<tr>
+										<td width='600' align='center'>
+											<span style='font-weight: bold;font-size: 20px;'>Total Question Was:</span>
+											<span style='font-weight: bold;font-size: 20px;'>
+												${jsonData[0][0].length}
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td width='600' align='center'>
+											<span style='font-weight: bold;font-size: 20px;'>Total Correct Was:</span>
+											<span style='font-weight: bold;font-size: 20px;'>
+												${correctAns}
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td width='600' align='center'>
+											<span style='font-weight: bold;font-size: 20px;'>Total Average Is:</span>
+											<span style='font-weight: bold;font-size: 20px;'>
+												${average}
+											</span>
+										</td>
+									</tr>
+								</table>
+							</div>
+		`;
 
 		let output = `
 			<table bgcolor='#666666' width='100%' align='center' border='0' cellspacing='0' cellpadding='0'
@@ -169,9 +179,9 @@ window.addEventListener("DOMContentLoaded", () => {
 									<td width='600' align='center' height='30' colspan='1'></td>
 								</tr>
 							</table>
-
 							${qBodyHtml}
 
+							${result}
 						</td>
 					</tr>
 				</table>
@@ -192,7 +202,6 @@ window.addEventListener("DOMContentLoaded", () => {
 		});
 		const resData = await res.text();
 		console.log(resData);
-		//console.log(JSON.parse(resData));
 	}
 
 });

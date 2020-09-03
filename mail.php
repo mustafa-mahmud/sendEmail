@@ -4,12 +4,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 $json = file_get_contents("php://input");
-//$data = json_decode($json, true);
-
-//Get Values from JS file
-//$body = $data[0][4] . $data[0][0][1];
-
-$x = "Hello World";
 
 $body = $json;
 
